@@ -1,3 +1,4 @@
+import { json } from "express"
 import { generateToken } from "../lib/utlis.js"
 import User from "../models/user.model.js"
 
@@ -13,10 +14,12 @@ export const signup = async (req,res)=>{
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         const newuser = new User({
-            fullname:fullname,
-            email:email,
-            password:hashedPassword,
-        })
+    fullname,
+    email,
+    password: hashedPassword,
+    profilepic: `/icons/${Math.floor(Math.random() * 6 + 1)}.png`,
+})
+
         if(newuser){
             //generates jwt token
             generateToken(newuser._id,res)
@@ -64,5 +67,23 @@ export const logout = (req,res)=>{
     }
 }
 export const updateprofile = async (req,res)=>{
-    
+    try {
+        const userid = req.user._id
+        if(!profilepic){
+            return res.status(400).json({message:"No profilepicture found"})
+        }
+        const updateduser = await User.findByIdAndUpdate(userid,{profilepic:`/icons/${Math.floor(Math.random()*6 + 1)}.png`},{new:true});
+        res.status(200).json(updateduser)
+    } catch (error) {
+        console.log("Error in logged out controller",error.message);
+        res.status(500).json({message:"Internal server error"})
+    }
+}
+export const checkauth = async (req,res)=>{
+    try {
+        res.status(200).json(req.user)
+    } catch (error) {
+        console.log("Error in logged out controller",error.message);
+        res.status(500).json({message:"Internal server error"})
+    }
 }

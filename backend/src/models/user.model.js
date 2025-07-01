@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema(
     fullname:{type:String,required:true},
     password:{type:String,required:true,minlength:6},
     profilepic:{type:String,default:""},
+    solved: [{ type: mongoose.Schema.Types.ObjectId, ref: "Problem" }],
 },{timestamps:true}
 );
 const User = mongoose.model("User",userSchema)
