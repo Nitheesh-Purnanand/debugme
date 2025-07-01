@@ -2,7 +2,7 @@ import express from "express";
 import {
   getAllProblems,
   getProblemById,
-  submitCode
+  submitCode,getUserDashboard
 } from "../controllers/problem.controller.js";
 import { protectroute } from "../middlewares/auth.middleware.js";
 
