@@ -1,7 +1,7 @@
 import { json } from "express"
 import { generateToken } from "../lib/utlis.js"
 import User from "../models/user.model.js"
-
+import bcrypt from "bcryptjs"
 export const signup = async (req,res)=>{
     const {fullname,email,password} = req.body
     try{
@@ -46,7 +46,7 @@ export const login = async (req,res)=>{
         return res.status(400).json({message:"Invalid Credentials"})
     }
     generateToken(user._id,res)
-    res.status(200)({
+    res.status(200).json({
         _id:user._id,
         fullname:user.fullname,
         email:user.email,
@@ -57,28 +57,24 @@ export const login = async (req,res)=>{
         res.status(500).json({message:"Internal Server Error"})
     }
 }
-export const logout = (req,res)=>{
-    try {
-        res.cookie("jwt","",{maxAge:0})
-        res.status(200).json({message:"Logged out successfully"});
-    } catch (error) {
-        console.log("Error in logged out controller",error.message);
-        res.status(500).json({message:"Internal server error"})
-    }
-}
-export const updateprofile = async (req,res)=>{
-    try {
-        const userid = req.user._id
-        if(!profilepic){
-            return res.status(400).json({message:"No profilepicture found"})
-        }
-        const updateduser = await User.findByIdAndUpdate(userid,{profilepic:`/icons/${Math.floor(Math.random()*6 + 1)}.png`},{new:true});
-        res.status(200).json(updateduser)
-    } catch (error) {
-        console.log("Error in logged out controller",error.message);
-        res.status(500).json({message:"Internal server error"})
-    }
-}
+export const logout = (req, res) => {
+  res.cookie("jwt", "", { httpOnly: true, expires: new Date(0) });
+  res.status(200).json({ message: "Logged out successfully" });
+};
+export const updateProfile = async (req, res) => {
+  const user = await User.findById(req.userId);
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  const { github, linkedin, leetcode, profilepic } = req.body;
+  user.github = github;
+  user.linkedin = linkedin;
+  user.leetcode = leetcode;
+  user.profilepic = profilepic;
+
+  await user.save();
+  res.status(200).json({ message: "Profile updated successfully" });
+};
+
 export const checkauth = async (req,res)=>{
     try {
         res.status(200).json(req.user)

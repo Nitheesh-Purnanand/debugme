@@ -7,8 +7,11 @@ import SignupPage from './pages/signupPage.jsx'
 import LoginPage from './pages/loginPage.jsx'
 import SettingsPage from './pages/settingsPage.jsx'
 import ProfilePage from './pages/profilePage.jsx'
+import Dashboard from './pages/Dashboard.jsx'
 import { useAuthStore } from './store/useAuthStore.js'
 import {Loader}from "lucide-react"
+import Logout from "./pages/Logout";
+
 const App = () => {
   const {authUser,checkauth,ischecking} = useAuthStore()
   useEffect(()=>{
@@ -26,9 +29,10 @@ const App = () => {
       <Navbar></Navbar>
       <Routes>
         <Route path='/' element={authUser?<HomePage/> : <Navigate to="/login"/>}>home</Route>
+        <Route path="/logout" element={<Logout />} />
         <Route path='/signup' element={!authUser?<SignupPage/>:<Navigate to="/"/>}></Route>
         <Route path='/login' element={!authUser?<LoginPage/>:<Navigate to="/"/>}></Route>
-        <Route path='/settings' element={<SettingsPage/>}></Route>
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path='/profile' element={authUser?<ProfilePage/>:<Navigate to="/login"/>}></Route>
       </Routes>
     </div>
