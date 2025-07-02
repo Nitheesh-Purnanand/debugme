@@ -12,6 +12,7 @@ import {Loader}from "lucide-react"
 import Logout from "./pages/Logout";
 import Leaderboard from './pages/Leaderboard.jsx'
 import PublicProfile from './pages/PublicProfile.jsx'
+import DiscussPage from './pages/DiscussPage.jsx'
 const App = () => {
   const {authUser,checkauth,ischecking} = useAuthStore()
   useEffect(()=>{
@@ -34,6 +35,7 @@ const App = () => {
         <Route path='/login' element={!authUser?<LoginPage/>:<Navigate to="/"/>}></Route>
         <Route path='/leaderboard' element={<Leaderboard/>}></Route>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/discuss" element={<DiscussPage />} />
         <Route path="/profile/:id" element={<PublicProfile />} />
         <Route path='/profile' element={authUser?<ProfilePage/>:<Navigate to="/login"/>}></Route>
       </Routes>

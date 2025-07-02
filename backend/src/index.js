@@ -7,7 +7,7 @@ import authRoute from "./routes/auth.route.js"
 import cors from "cors"
 import leaderboardRoutes from "./routes/leaderboard.routes.js";
 import userRoutes from "./routes/user.route.js";
-
+import discussRoutes from "./routes/discuss.route.js"
 
 dotenv.config()
 const app = express();
@@ -23,6 +23,7 @@ app.listen(PORT,()=>{
     connectdb()
 })
 
+app.use("/api/discuss", discussRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 app.use("/api/problems", problemRoutes);

@@ -25,37 +25,29 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-black text-white">
-      {/* Left side bento info */}
+    <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-black text-white items-center -mt-[60px]">
+      {/* Left section */}
       <div className="flex flex-col justify-center items-center px-6 py-10 space-y-6 bg-zinc-950">
         <h1 className="text-3xl font-bold text-cyan-400">Welcome to DebugMe</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-xl">
-          <div className="bg-zinc-900 p-5 rounded-xl shadow hover:shadow-cyan-500/20 transition">
-            <h3 className="text-cyan-400 font-semibold text-lg">Fix & Debug</h3>
-            <p className="text-sm text-zinc-400 mt-1">
-              Spot and fix bugs in real code snippets.
-            </p>
-          </div>
-          <div className="bg-zinc-900 p-5 rounded-xl shadow hover:shadow-cyan-500/20 transition">
-            <h3 className="text-cyan-400 font-semibold text-lg">Live Code</h3>
-            <p className="text-sm text-zinc-400 mt-1">
-              Code directly inside the Monaco editor and run test cases.
-            </p>
-          </div>
-          <div className="bg-zinc-900 p-5 rounded-xl shadow hover:shadow-cyan-500/20 transition">
-            <h3 className="text-cyan-400 font-semibold text-lg">Real-Time</h3>
-            <p className="text-sm text-zinc-400 mt-1">
-              Play in real-time with friends.
-            </p>
-          </div>
-          <div className="bg-zinc-900 p-5 rounded-xl shadow hover:shadow-cyan-500/20 transition">
-            <h3 className="text-cyan-400 font-semibold text-lg">Compete</h3>
-            <p className="text-sm text-zinc-400 mt-1">
-              Track your leaderboard rank and improve your streak.
-            </p>
-          </div>
+          {[
+            { title: "Fix & Debug", desc: "Spot and fix bugs in real code snippets." },
+            { title: "Live Code", desc: "Code directly inside the Monaco editor and run test cases." },
+            { title: "Real-Time", desc: "Play in real-time with friends." },
+            { title: "Compete", desc: "Track your leaderboard rank and improve your streak." },
+          ].map((card, idx) => (
+            <div
+              key={idx}
+              className="bg-zinc-900 p-5 rounded-xl shadow hover:shadow-cyan-500/20 transition"
+            >
+              <h3 className="text-cyan-400 font-semibold text-lg">{card.title}</h3>
+              <p className="text-sm text-zinc-400 mt-1">{card.desc}</p>
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* Right section */}
       <div className="flex justify-center items-center p-6">
         <div className="w-full max-w-md bg-[#111827] rounded-xl p-8 shadow-lg space-y-6">
           <div className="text-center">
@@ -64,6 +56,7 @@ const LoginPage = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Email */}
             <div>
               <label className="block text-sm font-medium mb-1">Email</label>
               <div className="relative">
@@ -72,7 +65,7 @@ const LoginPage = () => {
                 </span>
                 <input
                   type="email"
-                  className="input input-bordered w-full pl-10 bg-black border-zinc-700 text-white"
+                  className="w-full pl-10 pr-3 py-2 rounded-lg bg-zinc-900 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
                   placeholder="you@example.com"
                   value={formData.email}
                   onChange={(e) =>
@@ -81,6 +74,8 @@ const LoginPage = () => {
                 />
               </div>
             </div>
+
+            {/* Password */}
             <div>
               <label className="block text-sm font-medium mb-1">Password</label>
               <div className="relative">
@@ -89,15 +84,18 @@ const LoginPage = () => {
                 </span>
                 <input
                   type={showPassword ? "text" : "password"}
-                  className="input input-bordered w-full pl-10 bg-black border-zinc-700 text-white"
+                  className="w-full pl-10 pr-10 py-2 rounded-lg bg-zinc-900 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
                   placeholder="••••••••"
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}/>
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                />
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   onClick={() => setShowPassword(!showPassword)}
-                  >
+                >
                   {showPassword ? (
                     <EyeOff className="text-cyan-400 size-5" />
                   ) : (
@@ -109,19 +107,20 @@ const LoginPage = () => {
 
             {/* Submit */}
             <button
-              type="submit"
-              className="btn w-full bg-cyan-500 hover:bg-cyan-400 text-black font-semibold"
-              disabled={isloggingin}
-            >
-              {isloggingin ? (
-                <>
-                  <Loader2 className="size-5 animate-spin" />
-                  Loading...
-                </>
-              ) : (
-                "Sign In"
-              )}
-            </button>
+  type="submit"
+  className="btn w-full bg-cyan-500 hover:bg-cyan-400 text-black font-semibold py-2 rounded-lg transition"
+  disabled={isloggingin}
+>
+  {isloggingin ? (
+    <span className="flex items-center justify-center gap-2">
+      <Loader2 className="w-4 h-4 animate-spin" />
+      <span>Signing in...</span>
+    </span>
+  ) : (
+    "Sign In"
+  )}
+</button>
+
           </form>
 
           <p className="text-center text-sm text-zinc-400">

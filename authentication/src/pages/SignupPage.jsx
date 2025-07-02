@@ -6,7 +6,6 @@ import {
   Loader2,
   Lock,
   Mail,
-  MessageSquare,
   User,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -40,32 +39,26 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-black text-white px-4">
+    <div className="min-h-screen flex justify-center items-center bg-black text-white px-4 -mt-[60px]">
       <div className="w-full max-w-md bg-zinc-900 rounded-2xl shadow-2xl p-8 space-y-6">
         {/* Header */}
         <div className="text-center mb-4">
-          <div className="flex flex-col items-center gap-2">
-            <h1 className="text-2xl font-bold">Create Account</h1>
-            <p className="text-zinc-400 text-sm">
-              Get started with your free account
-            </p>
-          </div>
+          <h1 className="text-2xl font-bold">Create Account</h1>
+          <p className="text-zinc-400 text-sm">
+            Get started with your free account
+          </p>
         </div>
+
         {/* Form */}
-        <div className="w-full max-w-md bg-[#111827] p-8 rounded-lg shadow-lg">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Full Name */}
           <div>
-            <label className="block text-sm font-medium mb-1">
-              Full Name
-            </label>
+            <label className="block text-sm font-medium mb-1">Full Name</label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
-                <User className="text-cyan-400 size-5" />
-              </span>
+              <User className="absolute top-1/2 left-3 transform -translate-y-1/2 text-cyan-400 size-5" />
               <input
                 type="text"
-                className="input input-bordered w-full pl-10 bg-black border-zinc-700 text-white"
+                className="w-full bg-black text-white border border-zinc-700 rounded-md py-2 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 placeholder="John Doe"
                 value={formData.fullname}
                 onChange={(e) =>
@@ -79,12 +72,10 @@ const SignupPage = () => {
           <div>
             <label className="block text-sm font-medium mb-1">Email</label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
-                <Mail className="text-cyan-400 size-5" />
-              </span>
+              <Mail className="absolute top-1/2 left-3 transform -translate-y-1/2 text-cyan-400 size-5" />
               <input
                 type="email"
-                className="input input-bordered w-full pl-10 bg-black border-zinc-700 text-white"
+                className="w-full bg-black text-white border border-zinc-700 rounded-md py-2 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 placeholder="you@example.com"
                 value={formData.email}
                 onChange={(e) =>
@@ -98,12 +89,10 @@ const SignupPage = () => {
           <div>
             <label className="block text-sm font-medium mb-1">Password</label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
-                <Lock className="text-cyan-400 size-5" />
-              </span>
+              <Lock className="absolute top-1/2 left-3 transform -translate-y-1/2 text-cyan-400 size-5" />
               <input
                 type={showPassword ? "text" : "password"}
-                className="input input-bordered w-full pl-10 bg-black border-zinc-700 text-white"
+                className="w-full bg-black text-white border border-zinc-700 rounded-md py-2 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={(e) =>
@@ -112,14 +101,10 @@ const SignupPage = () => {
               />
               <button
                 type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-cyan-400"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? (
-                  <EyeOff className="text-cyan-400 size-5" />
-                ) : (
-                  <Eye className="text-cyan-400 size-5" />
-                )}
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
           </div>
@@ -127,24 +112,27 @@ const SignupPage = () => {
           {/* Submit */}
           <button
             type="submit"
-            className="btn w-full bg-cyan-500 hover:bg-cyan-400 text-black font-semibold"
+            className="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-semibold py-2 rounded-md transition"
             disabled={issignup}
           >
             {issignup ? (
-              <>
+              <div className="flex justify-center items-center gap-2">
                 <Loader2 className="size-5 animate-spin" />
                 Loading...
-              </>
+              </div>
             ) : (
               "Create Account"
             )}
           </button>
         </form>
-</div>  
+
         {/* Footer */}
         <p className="text-center text-zinc-400 text-sm">
           Already have an account?{" "}
-          <Link to="/login" className="text-cyan-400 hover:text-cyan-300 font-medium">
+          <Link
+            to="/login"
+            className="text-cyan-400 hover:text-cyan-300 font-medium"
+          >
             Sign in
           </Link>
         </p>
