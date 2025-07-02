@@ -11,7 +11,8 @@ import Dashboard from './pages/Dashboard.jsx'
 import { useAuthStore } from './store/useAuthStore.js'
 import {Loader}from "lucide-react"
 import Logout from "./pages/Logout";
-
+import Leaderboard from './pages/Leaderboard.jsx'
+import PublicProfile from './pages/PublicProfile.jsx'
 const App = () => {
   const {authUser,checkauth,ischecking} = useAuthStore()
   useEffect(()=>{
@@ -32,7 +33,9 @@ const App = () => {
         <Route path="/logout" element={<Logout />} />
         <Route path='/signup' element={!authUser?<SignupPage/>:<Navigate to="/"/>}></Route>
         <Route path='/login' element={!authUser?<LoginPage/>:<Navigate to="/"/>}></Route>
+        <Route path='/leaderboard' element={<Leaderboard/>}></Route>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile/:id" element={<PublicProfile />} />
         <Route path='/profile' element={authUser?<ProfilePage/>:<Navigate to="/login"/>}></Route>
       </Routes>
     </div>

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../lib/axios";
 
 const ProfilePage = () => {
-  const { authUser, logout } = useAuthStore();
+  const { authUser, logout,setAuthUser } = useAuthStore();
   const navigate = useNavigate();
 
   const [github, setGithub] = useState(authUser?.github || "");
@@ -18,21 +18,30 @@ const ProfilePage = () => {
     await logout();
     navigate("/login");
   };
+const handleProfileUpdate = async () => {
+  try {
+    const res = await axiosInstance.post("/auth/update-profile", {
+      github,
+      linkedin,
+      leetcode,
+      profilepic: profilePic,
+    });
 
-  const handleProfileUpdate = async () => {
-    try {
-      const res = await axiosInstance.put("/auth/update-profile", {
-        github,
-        linkedin,
-        leetcode,
-        profilepic: profilePic,
-      });
-      toast.success("Profile updated successfully!");
-    } catch (err) {
-      console.error("Update Error", err);
-      toast.error("Failed to update profile.");
-    }
-  };
+    toast.success("Profile updated successfully!");
+    setAuthUser({
+      ...authUser,
+      github,
+      linkedin,
+      leetcode,
+      profilepic: profilePic,
+    });
+
+  } catch (err) {
+    console.error("Update Error", err);
+    toast.error("Failed to update profile.");
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-black text-white p-6">

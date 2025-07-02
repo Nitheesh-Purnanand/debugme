@@ -5,6 +5,10 @@ import cookieParser from "cookie-parser"
 import problemRoutes from "./routes/problem.route.js";
 import authRoute from "./routes/auth.route.js"
 import cors from "cors"
+import leaderboardRoutes from "./routes/leaderboard.routes.js";
+import userRoutes from "./routes/user.route.js";
+
+
 dotenv.config()
 const app = express();
 const PORT = process.env.PORT
@@ -18,5 +22,8 @@ app.listen(PORT,()=>{
     console.log("app is listening at port")
     connectdb()
 })
+
+app.use("/api/users", userRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
 app.use("/api/problems", problemRoutes);
 app.use("/api/auth",authRoute)

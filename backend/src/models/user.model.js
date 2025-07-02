@@ -1,12 +1,15 @@
 import mongoose, { mongo } from "mongoose";
-const userSchema = new mongoose.Schema(
-{
-    email:{type:String,required:true,unique:true},
-    fullname:{type:String,required:true},
-    password:{type:String,required:true,minlength:6},
-    profilepic:{type:String,default:""},
-    solved: [{ type: mongoose.Schema.Types.ObjectId, ref: "Problem" }],
-},{timestamps:true}
-);
+// models/user.model.js
+const userSchema = new mongoose.Schema({
+  fullname: String,
+  email: String,
+  password: String,
+  profilepic: String,
+  github: String,
+  linkedin: String,
+  leetcode: String,
+  solved: [{ type: mongoose.Schema.Types.ObjectId, ref: "Problem" }],
+});
+
 const User = mongoose.model("User",userSchema)
 export default User

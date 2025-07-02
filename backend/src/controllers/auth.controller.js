@@ -62,19 +62,24 @@ export const logout = (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 };
 export const updateProfile = async (req, res) => {
-  const user = await User.findById(req.userId);
-  if (!user) return res.status(404).json({ message: "User not found" });
+  try {
+    const user = await User.findById(req.userId); // protectroute must set req.userId
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-  const { github, linkedin, leetcode, profilepic } = req.body;
-  user.github = github;
-  user.linkedin = linkedin;
-  user.leetcode = leetcode;
-  user.profilepic = profilepic;
+    const { github, linkedin, leetcode, profilepic } = req.body;
 
-  await user.save();
-  res.status(200).json({ message: "Profile updated successfully" });
+    user.github = github;
+    user.linkedin = linkedin;
+    user.leetcode = leetcode;
+    user.profilepic = profilepic;
+
+    await user.save();
+    res.status(200).json({ message: "Profile updated successfully" });
+  } catch (err) {
+    console.error("Error in updateProfile:", err.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
-
 export const checkauth = async (req,res)=>{
     try {
         res.status(200).json(req.user)
