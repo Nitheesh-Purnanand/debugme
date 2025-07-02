@@ -1,25 +1,42 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import { Bug, Code2, Users } from "lucide-react";
 
 const HomePage = () => {
   const { authUser } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleCardClick = (type) => {
+    if (type === "solve") {
+      navigate("/problems");
+    } else if (type === "debug") {
+      // For now, navigate to a random problem — assuming route is like `/problems/:id`
+      const randomId = Math.floor(Math.random() * 1000); // Replace with actual logic later
+      navigate(`/problems/${randomId}`);
+    } else if (type === "community") {
+      navigate("/leaderboard"); // Or any community route
+    }
+  };
 
   const cards = [
     {
       title: "Start Solving",
       description: "Practice curated coding problems.",
       icon: <Code2 size={36} className="text-cyan-400" />,
+      type: "solve",
     },
     {
       title: "Fix & Debug",
-      description: "Debug buggy code to level up.",
+      description: "Debug buggy code to level up.                           (gives you a random problem to solve)",
       icon: <Bug size={36} className="text-orange-400" />,
+      type: "debug",
     },
     {
       title: "Compete & Connect",
       description: "Join contests and discussions.",
       icon: <Users size={36} className="text-purple-400" />,
+      type: "community",
     },
   ];
 
@@ -33,7 +50,8 @@ const HomePage = () => {
         {cards.map((card, index) => (
           <div
             key={index}
-            className="bg-zinc-900 rounded-xl p-6 flex flex-col items-start transition transform shadow-lg"
+            onClick={() => handleCardClick(card.type)}
+            className="bg-zinc-900 rounded-xl p-6 flex flex-col items-start transition transform shadow-lg hover:shadow-cyan-500/30 hover:scale-105 cursor-pointer"
           >
             <div className="mb-4">{card.icon}</div>
             <h2 className="text-xl font-semibold mb-2 text-cyan-400">

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const PublicProfile = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -28,7 +29,14 @@ const PublicProfile = () => {
 
   return (
     <div className="min-h-screen bg-black text-white p-6">
-      <div className="max-w-xl mx-auto bg-zinc-900 p-8 rounded-xl shadow-lg">
+      <button
+        onClick={() => navigate(-1)}
+        className="mb-4 px-4 py-1 rounded-md bg-gray-700 hover:bg-gray-600 text-white font-semibold transition"
+      >
+        ← Back
+      </button>
+
+      <div className="max-w-xl mx-auto bg-zinc-900 p-8 rounded-xl shadow-lg border border-zinc-700">
         <div className="flex items-center space-x-6">
           <img
             src={user.profilepic || "/default.png"}
@@ -47,6 +55,7 @@ const PublicProfile = () => {
               <a
                 href={user.github}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="text-blue-400 hover:underline"
               >
                 GitHub
@@ -58,6 +67,7 @@ const PublicProfile = () => {
               <a
                 href={user.linkedin}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="text-blue-400 hover:underline"
               >
                 LinkedIn
@@ -69,6 +79,7 @@ const PublicProfile = () => {
               <a
                 href={user.leetcode}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="text-blue-400 hover:underline"
               >
                 LeetCode
@@ -77,8 +88,10 @@ const PublicProfile = () => {
           )}
         </div>
 
-        <div className="mt-6 text-green-400 font-semibold">
-          ✅ Problems Solved: {user.solvedCount || 0}
+        <div className="mt-6">
+          <span className="inline-block bg-cyan-500 text-black px-4 py-1 rounded-full text-sm font-semibold">
+             Problems Solved: {user.solvedCount || 0}
+          </span>
         </div>
       </div>
     </div>
