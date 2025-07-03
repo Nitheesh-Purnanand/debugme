@@ -6,10 +6,16 @@ const API = axios.create({
 });
 
 export const execCode = async (language, sourcecode) => {
-  const response = await API.post("/execute", {
-    language,
-    version: LANGUAGE_VERSIONS[language],
-    files: [{ content: sourcecode }],
-  });
-  return response.data;
+  try {
+    const response = await API.post("/execute", {
+      language,
+      version: LANGUAGE_VERSIONS[language],
+      files: [{ content: sourcecode }],
+    });
+    return response.data;
+  } catch (err) {
+    console.error("⚠️ execCode failed:", err);
+    return { run: { output: "" } }; // Avoid crash
+  }
 };
+

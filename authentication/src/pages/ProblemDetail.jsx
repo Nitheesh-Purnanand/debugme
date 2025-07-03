@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProblemById, submitSolution } from "../api/problemApi";
-import { LANGUAGE_VERSIONS,code } from "../utils/constants";
+import { LANGUAGE_VERSIONS,CODE_SNIPPETS } from "../utils/constants";
 import { Box, Select, Button, Textarea, Text, VStack } from "@chakra-ui/react";
 
 export default function ProblemDetail() {
@@ -12,7 +12,11 @@ export default function ProblemDetail() {
   const [output, setOutput] = useState("");
 
   useEffect(() => {
-    getProblemById(id).then(res => setProblem(res.data));
+    getProblemById(id).then(res => {
+  setProblem(res.data);
+  setCode(res.data.starterCode);  // ✅ Set problem-specific code
+  setLanguage(res.data.language || "javascript"); // If problem has language
+});
   }, [id]);
 
   const handleSubmit = async () => {
