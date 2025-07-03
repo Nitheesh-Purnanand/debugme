@@ -13,6 +13,8 @@ import Logout from "./pages/Logout";
 import Leaderboard from './pages/Leaderboard.jsx'
 import PublicProfile from './pages/PublicProfile.jsx'
 import DiscussPage from './pages/DiscussPage.jsx'
+import Problems from './pages/Problems.jsx'
+import ProblemDetail from './pages/ProblemDetail.jsx'
 const App = () => {
   const {authUser,checkauth,ischecking} = useAuthStore()
   useEffect(()=>{
@@ -31,6 +33,8 @@ const App = () => {
       <Routes>
         <Route path='/' element={authUser?<HomePage/> : <Navigate to="/login"/>}>home</Route>
         <Route path="/logout" element={<Logout />} />
+        <Route path="/problems" element={<Problems />} />
+        <Route path="/problems/:id" element={<ProblemDetail />} />
         <Route path='/signup' element={!authUser?<SignupPage/>:<Navigate to="/"/>}></Route>
         <Route path='/login' element={!authUser?<LoginPage/>:<Navigate to="/"/>}></Route>
         <Route path='/leaderboard' element={<Leaderboard/>}></Route>
