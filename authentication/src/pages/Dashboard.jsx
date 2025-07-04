@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../lib/axios.js";
 
-const TOTAL_PROBLEMS = 100;
+const TOTAL_PROBLEMS = 50;
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
