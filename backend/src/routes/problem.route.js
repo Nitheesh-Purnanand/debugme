@@ -5,7 +5,7 @@ import { protectroute } from "../middlewares/auth.middleware.js";
 const router = express.Router();
 
 router.get("/", getAllProblems);
-router.get("/:id", getProblemById);
+router.get("/:id",protectroute, getProblemById);
 router.post("/:id/submit", protectroute, submitCode);
 
 export default router;

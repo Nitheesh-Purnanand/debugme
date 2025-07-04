@@ -1,21 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import { Bug, Code2, Users } from "lucide-react";
+import { axiosInstance } from "../lib/axios";
 
 const HomePage = () => {
   const { authUser } = useAuthStore();
   const navigate = useNavigate();
+  const [problems, setProblems] = useState([]);
+
+  useEffect(() => {
+    const fetchProblems = async () => {
+      try {
+        const { data } = await axiosInstance.get("/problems");
+        setProblems(data);
+      } catch (err) {
+        console.error("Failed to load problems", err);
+      }
+    };
+    fetchProblems();
+  }, []);
 
   const handleCardClick = (type) => {
     if (type === "solve") {
       navigate("/problems");
     } else if (type === "debug") {
-      // For now, navigate to a random problem — assuming route is like `/problems/:id`
-      const randomId = Math.floor(Math.random() * 1000); // Replace with actual logic later
-      navigate(`/problems/${randomId}`);
+      if (problems.length > 0) {
+        const randomProblem = problems[Math.floor(Math.random() * problems.length)];
+        navigate(`/problems/${randomProblem._id}`);
+      } else {
+        alert("No problems available yet.");
+      }
     } else if (type === "community") {
-      navigate("/leaderboard"); // Or any community route
+      navigate("/leaderboard");
     }
   };
 
@@ -28,7 +45,7 @@ const HomePage = () => {
     },
     {
       title: "Fix & Debug",
-      description: "Debug buggy code to level up.                           (gives you a random problem to solve)",
+      description: "Debug buggy code to level up.(Generat random problem)",
       icon: <Bug size={36} className="text-orange-400" />,
       type: "debug",
     },

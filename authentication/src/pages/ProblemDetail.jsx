@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { getProblemById, submitSolution } from "../api/problemApi";
 import { LANGUAGE_VERSIONS, CODE_SNIPPETS } from "../utils/constants";
 import Editor from "@monaco-editor/react";
+import { useNavigate } from "react-router-dom";
+
 
 export default function ProblemDetail() {
   const { id } = useParams();
@@ -12,6 +14,7 @@ export default function ProblemDetail() {
   const [output, setOutput] = useState("");
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+const navigate = useNavigate();
 
   useEffect(() => {
     getProblemById(id).then((res) => {
@@ -40,7 +43,22 @@ export default function ProblemDetail() {
     <div className="flex h-[calc(100vh-80px)] bg-[#0e0e10] text-white">
       {/* Left Section */}
       <div className="w-1/2 p-6 border-r border-gray-700 overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-3 text-cyan-400">{problem.title}</h2>
+      <button
+  onClick={() => navigate("/problems")}
+  className="bg-cyan-400 hover:bg-cyan-600 text-white font-medium px-2 py-1 rounded flex items-center justify-center gap-2 transition disabled:opacity-60"
+>
+  ← Back
+</button>
+
+      <h2 className="text-2xl font-bold mb-3 text-cyan-400 flex items-center gap-2">
+  {problem.title}
+  {problem.solved && (
+    <span className="bg-green-600 text-white text-xs px-2 py-1 rounded-full">
+       Solved
+    </span>
+  )}
+</h2>
+
         <p className="text-gray-300 mb-4 whitespace-pre-wrap">{problem.description}</p>
 
         <div className="mb-4">

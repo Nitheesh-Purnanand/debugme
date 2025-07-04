@@ -30,7 +30,7 @@ const Dashboard = () => {
 console.log(user)
   return (
     <div className="min-h-screen bg-black text-white p-8 flex flex-col items-center">
-      <h1 className="text-3xl font-bold mb-6 text-cyan-400">📊 DebugMe Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-6 text-cyan-400"> DebugMe Dashboard</h1>
 
       {/* Top Info Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full mb-10">
@@ -50,7 +50,7 @@ console.log(user)
         {/* Card 2 - Solved Progress */}
         <div className="bg-zinc-900 rounded-xl p-6 shadow-md flex flex-col justify-center">
           <p className="text-lg font-semibold text-green-400 mb-1">
-            ✅ {user.solvedCount} / {TOTAL_PROBLEMS} Problems Solved
+             {user.solvedCount} / {TOTAL_PROBLEMS} Problems Solved
           </p>
           <div className="bg-zinc-700 w-full h-3 rounded-full">
             <div

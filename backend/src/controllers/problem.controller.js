@@ -8,8 +8,24 @@ export const getAllProblems = async (req, res) => {
 };
 
 export const getProblemById = async (req, res) => {
-  const problem = await Problem.findById(req.params.id);
-  res.json(problem);
+  try {
+    const problem = await Problem.findById(req.params.id).lean();
+    if (!problem) return res.status(404).json({ error: "Problem not found" });
+
+    let solved = false;
+
+    if (req.user) {
+      const user = await User.findById(req.user._id).lean();
+      solved = user.solvedProblems?.some(
+        (pId) => pId.toString() === problem._id.toString()
+      );
+    }
+
+    res.json({ ...problem, solved });
+  } catch (err) {
+    console.error("🔥 Problem fetch error:", err.message);
+    res.status(500).json({ error: "Server error" });
+  }
 };
 
 
