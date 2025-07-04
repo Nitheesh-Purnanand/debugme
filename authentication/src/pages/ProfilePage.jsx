@@ -12,7 +12,7 @@ const ProfilePage = () => {
   const [github, setGithub] = useState(authUser?.github || "");
   const [linkedin, setLinkedin] = useState(authUser?.linkedin || "");
   const [leetcode, setLeetcode] = useState(authUser?.leetcode || "");
-  const [profilePic, setProfilePic] = useState(authUser?.profilepic || "/default.png");
+const [profilePic, setProfilePic] = useState(authUser?.profilepic || "/icons/default.png");
 
   const handleLogout = async () => {
     await logout();
@@ -20,6 +20,13 @@ const ProfilePage = () => {
   };
 const handleProfileUpdate = async () => {
   try {
+    console.log("📤 Sending update payload:", {
+      github,
+      linkedin,
+      leetcode,
+      profilepic: profilePic,
+    });
+
     const res = await axiosInstance.post("/auth/update-profile", {
       github,
       linkedin,
@@ -28,6 +35,8 @@ const handleProfileUpdate = async () => {
     });
 
     toast.success("Profile updated successfully!");
+    console.log("✅ Update success", res.data);
+
     setAuthUser({
       ...authUser,
       github,
@@ -37,10 +46,11 @@ const handleProfileUpdate = async () => {
     });
 
   } catch (err) {
-    console.error("Update Error", err);
+    console.error("❌ Update Error", err);
     toast.error("Failed to update profile.");
   }
 };
+
 
 
   return (
@@ -49,10 +59,11 @@ const handleProfileUpdate = async () => {
         {/* Profile Header */}
         <div className="flex items-center space-x-6">
           <img
-            src={profilePic}
-            alt="Profile"
-            className="w-20 h-20 rounded-full border-2 border-cyan-400 object-cover"
-          />
+  src={profilePic}
+  alt="Profile"
+  className="w-20 h-20 rounded-full border-2 border-cyan-400 object-cover"
+/>
+
           <div>
             <h2 className="text-2xl font-semibold text-cyan-400">
               {authUser?.fullname}
@@ -62,7 +73,7 @@ const handleProfileUpdate = async () => {
               className="mt-2 text-xs text-cyan-500 hover:underline flex items-center gap-1"
               onClick={() => {
                 const newIndex = Math.floor(Math.random() * 6) + 1;
-                setProfilePic(`/src/icons/${newIndex}.png`);
+                setProfilePic(`/icons/${newIndex}.png`);
               }}
             >
               <Pencil size={14} /> Change Profile Picture
