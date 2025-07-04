@@ -1,97 +1,65 @@
-import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { axiosInstance } from "../lib/axios";
 
 const PublicProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const fetchProfile = async () => {
+    try {
+      const { data } = await axiosInstance.get(`/user/profile/${id}`);
+      setProfile(data);
+    } catch (err) {
+      console.error("Failed to load profile", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    fetch(`http://localhost:5001/api/users/${id}`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setUser(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching user profile:", err);
-        setLoading(false);
-      });
+    fetchProfile();
   }, [id]);
 
-  if (loading) return <div className="text-white p-4">Loading...</div>;
-
-  if (!user)
-    return <div className="text-red-400 text-center p-4">User not found.</div>;
+  if (loading) return <div className="text-center mt-10 text-xl text-white">Loading...</div>;
+  if (!profile) return <div className="text-center mt-10 text-xl text-red-500">User not found</div>;
 
   return (
-    <div className="min-h-screen bg-black text-white p-6">
-      <button
-        onClick={() => navigate(-1)}
-        className="mb-4 px-4 py-1 rounded-md bg-gray-700 hover:bg-gray-600 text-white font-semibold transition"
-      >
-        ← Back
-      </button>
+    <div className="min-h-screen bg-gray-900 text-white px-6 py-8">
+      <div className="max-w-3xl mx-auto">
+        <button
+          onClick={() => navigate("/leaderboard")}
+          className="mb-6 px-4 py-2  bg-cyan-500 hover:bg-cyan-600 text-black font-semibold rounded-lg transition"
+        >
+          Back
+        </button>
 
-      <div className="max-w-xl mx-auto bg-zinc-900 p-8 rounded-xl shadow-lg border border-zinc-700">
-        <div className="flex items-center space-x-6">
-          <img
-            src={user.profilepic || "/default.png"}
-            alt="Profile"
-            className="w-24 h-24 rounded-full border-2 border-cyan-400 object-cover"
-          />
-          <div>
-            <h2 className="text-2xl font-bold text-cyan-400">{user.fullname}</h2>
-            <p className="text-zinc-400 text-sm">{user.email}</p>
-          </div>
-        </div>
+        <h1 className="text-4xl font-bold mb-2 text-cyan-400">👤 {profile.fullname}</h1>
+        <p className="text-gray-400 mb-4">Joined: {new Date(profile.joinedAt).toDateString()}</p>
 
-        <div className="mt-8 space-y-3">
-          {user.github && (
-            <div>
-              <a
-                href={user.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:underline"
-              >
-                GitHub
-              </a>
-            </div>
+        <div className="mb-6 space-x-6 text-lg">
+          {profile.github && (
+            <a href={profile.github} className="text-blue-400 hover:underline" target="_blank" rel="noreferrer">
+              GitHub
+            </a>
           )}
-          {user.linkedin && (
-            <div>
-              <a
-                href={user.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:underline"
-              >
-                LinkedIn
-              </a>
-            </div>
+          {profile.linkedin && (
+            <a href={profile.linkedin} className="text-blue-400 hover:underline" target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
           )}
-          {user.leetcode && (
-            <div>
-              <a
-                href={user.leetcode}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:underline"
-              >
-                LeetCode
-              </a>
-            </div>
+          {profile.leetcode && (
+            <a href={profile.leetcode} className="text-blue-400 hover:underline" target="_blank" rel="noreferrer">
+              LeetCode
+            </a>
           )}
         </div>
 
-        <div className="mt-6">
-          <span className="inline-block bg-cyan-500 text-black px-4 py-1 rounded-full text-sm font-semibold">
-             Problems Solved: {user.solvedCount || 0}
-          </span>
+        <div className="mt-6 bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-lg">
+          <h2 className="text-2xl font-semibold text-green-400 mb-2">✅ Solved Problems</h2>
+          <p className="text-3xl font-bold text-white">{profile.solvedProblems.length}</p>
         </div>
       </div>
     </div>

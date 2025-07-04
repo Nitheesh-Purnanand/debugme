@@ -8,7 +8,6 @@ import cors from "cors"
 import leaderboardRoutes from "./routes/leaderboard.routes.js";
 import userRoutes from "./routes/user.route.js";
 import discussRoutes from "./routes/discuss.route.js"
-
 dotenv.config()
 const app = express();
 const PORT = process.env.PORT
@@ -22,6 +21,7 @@ app.listen(PORT,()=>{
     console.log("app is listening at port")
     connectdb()
 })
+app.use("/api/user", userRoutes); // ✅ this ensures /api/user/dashboard exists
 
 app.use("/api/discuss", discussRoutes);
 app.use("/api/users", userRoutes);

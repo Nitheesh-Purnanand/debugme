@@ -12,6 +12,7 @@ export const getProblemById = async (req, res) => {
   res.json(problem);
 };
 
+
 export const submitCode = async (req, res) => {
   try {
     const { language, code } = req.body;
@@ -31,28 +32,44 @@ export const submitCode = async (req, res) => {
       const passed = actual.includes(expected);
       results.push({ input: test.input, expected, actual, passed });
 
-      console.log("🧪 Test input:", test.input);
-      console.log("📤 Output:", actual);
-      console.log("📥 Expected:", expected);
-
       if (!passed) {
-        return res.json({ success: false, results }); // ❗ return all results including failed one
+        // ❗ Still record submission even if failed
+        const user = await User.findById(req.user._id);
+        user.recentSubmissions.unshift({
+          title: problem.title,
+          problem: problem._id,
+          success: false,
+        });
+        user.recentSubmissions = user.recentSubmissions.slice(0, 5); // limit to last 5
+        await user.save();
+
+        return res.json({ success: false, results });
       }
     }
 
-    // ✅ Save solved if all passed
+    // ✅ Passed all tests — mark as solved
     const user = await User.findById(req.user._id);
-    if (!user.solved?.includes(problem._id)) {
-      user.solved = user.solved || [];
-      user.solved.push(problem._id);
-      await user.save();
+    if (!user.solvedProblems.includes(problem._id)) {
+      user.solvedProblems.push(problem._id);
+      user.solvedCount += 1;
     }
 
-    return res.json({ success: true, results }); // ❗ include results here too
+    // ❗ Record successful submission
+    user.recentSubmissions.unshift({
+      title: problem.title,
+      problem: problem._id,
+      success: true,
+    });
+    user.recentSubmissions = user.recentSubmissions.slice(0, 5); // keep only last 5
+
+    await user.save();
+
+    return res.json({ success: true, results });
 
   } catch (err) {
     console.error("🔥 Submit Code Error:", err);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 

@@ -5,7 +5,7 @@ const TOTAL_PROBLEMS = 100;
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
-  
+
   const fetchDashboard = async () => {
     try {
       const { data } = await axiosInstance.get("/user/dashboard");
@@ -27,7 +27,7 @@ const Dashboard = () => {
   );
 
   const progressPercent = Math.round((user.solvedCount / TOTAL_PROBLEMS) * 100);
-console.log(user)
+
   return (
     <div className="min-h-screen bg-black text-white p-8 flex flex-col items-center">
       <h1 className="text-3xl font-bold mb-6 text-cyan-400">📊 DebugMe Dashboard</h1>

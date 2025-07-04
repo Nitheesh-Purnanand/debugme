@@ -6,13 +6,14 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const users = await User.find({}, "fullname email profilepic solved").lean();
+    const users = await User.find({}, "fullname email profilepic solvedProblems").lean(); // 🔁 FIXED FIELD
+
     const leaderboard = users.map((user) => ({
       _id: user._id,
       fullname: user.fullname,
       email: user.email,
       profilepic: user.profilepic || "/default.png",
-      solvedCount: user.solved?.length || 0,
+      solvedCount: user.solvedProblems?.length || 0, // 🔁 FIXED HERE TOO
     }));
 
     res.status(200).json(leaderboard);

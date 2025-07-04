@@ -15,7 +15,11 @@ const Leaderboard = () => {
         }
         return res.json();
       })
-      .then((data) => setUsers(data))
+      .then((data) => {
+        // 🔁 Sort by solvedCount descending (optional in frontend, if not sorted from backend)
+        const sorted = data.sort((a, b) => b.solvedCount - a.solvedCount);
+        setUsers(sorted);
+      })
       .catch((err) => console.error("Leaderboard fetch error", err));
   }, []);
 
@@ -41,7 +45,7 @@ const Leaderboard = () => {
                 key={u._id}
                 className="border-t border-gray-700 hover:bg-gray-700 transition"
               >
-                <td className="p-3">{idx + 1}</td>
+                <td className="p-3 font-bold">{idx + 1}</td>
                 <td className="p-3 font-medium text-white">{u.fullname}</td>
                 <td className="p-3 text-center text-green-400 font-semibold">
                   {u.solvedCount}
@@ -58,7 +62,7 @@ const Leaderboard = () => {
             ))}
             {users.length === 0 && (
               <tr>
-                <td colSpan="5" className="p-4 text-center text-gray-400">
+                <td colSpan="4" className="p-4 text-center text-gray-400">
                   No users yet.
                 </td>
               </tr>

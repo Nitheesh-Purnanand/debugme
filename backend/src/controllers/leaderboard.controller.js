@@ -1,23 +1,21 @@
 import User from "../models/user.model.js";
 
+
 export const getLeaderboard = async (req, res) => {
   try {
-    const users = await User.find({})
-      .select("fullname email solved profilepic")
-      .lean();
+    const users = await User.find().select("fullname solvedProblems").lean();
 
-    const leaderboard = users
-      .map(user => ({
-        fullname: user.fullname,
-        email: user.email,
-        profilepic: user.profilepic || "",
-        solvedCount: user.solved.length
+    const formatted = users
+      .map((u) => ({
+        _id: u._id,
+        fullname: u.fullname,
+        solvedCount: u.solvedProblems?.length || 0,
       }))
       .sort((a, b) => b.solvedCount - a.solvedCount);
 
-    res.status(200).json(leaderboard);
-  } catch (error) {
-    console.error("Error generating leaderboard:", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.json(formatted);
+  } catch (err) {
+    console.error("🔥 Leaderboard Error:", err);
+    res.status(500).json({ error: "Server error" });
   }
 };

@@ -1,19 +1,13 @@
 import express from "express";
-import User from "../models/user.model.js";
+import { getPublicProfile, getUserDashboard } from "../controllers/user.controller.js";
+import {requireAuth} from "../middlewares/auth.middleware.js"
 
 const router = express.Router();
 
-router.get("/:id", async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id).select(
-      "fullname email github linkedin leetcode profilepic solvedCount"
-    );
-    if (!user) return res.status(404).json({ message: "User not found" });
-    res.json(user);
-  } catch (err) {
-    console.error("Error fetching public profile", err);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-});
+// DASHBOARD route
+// routes/user.route.js
+router.get("/profile/:id", getPublicProfile);
+
+router.get("/dashboard", requireAuth, getUserDashboard);
 
 export default router;
