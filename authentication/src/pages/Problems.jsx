@@ -10,16 +10,19 @@ export default function Problems() {
   }, []);
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Problems</h1>
-      {problems.map((p) => (
-        <Link to={`/problems/${p._id}`} key={p._id}>
-          <div className="border border-gray-300 p-4 rounded-lg mb-4 hover:bg-gray-50 transition">
-            <h2 className="text-xl font-semibold">{p.title}</h2>
-            <p className="text-gray-700">{p.description}</p>
-          </div>
-        </Link>
-      ))}
+    <div className="min-h-screen p-6 bg-black text-white">
+      <h1 className="text-3xl font-bold mb-8 text-cyan-400"> Practice Problems</h1>
+
+      <div className="grid grid-cols-1 gap-5">
+        {problems.map((p) => (
+          <Link to={`/problems/${p._id}`} key={p._id}>
+            <div className="border border-gray-700 bg-gray-900 rounded-xl p-5 hover:border-cyan-400 ">
+              <h2 className="text-xl font-semibold text-white mb-2">{p.title}</h2>
+              <p className="text-gray-400 text-sm">{p.description}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

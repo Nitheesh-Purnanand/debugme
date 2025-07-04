@@ -32,7 +32,7 @@ const Leaderboard = () => {
               <th className="p-3 text-left">#</th>
               <th className="p-3 text-left">Name</th>
               <th className="p-3 text-center">Solved</th>
-              <th className="p-3 text-center">Action</th>
+              <th className="p-3 text-center">Profile</th>
             </tr>
           </thead>
           <tbody>
