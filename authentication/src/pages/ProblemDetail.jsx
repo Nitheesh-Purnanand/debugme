@@ -2,14 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProblemById, submitSolution } from "../api/problemApi";
 import { LANGUAGE_VERSIONS, CODE_SNIPPETS } from "../utils/constants";
-import {
-  Box,
-  Select,
-  Button,
-  Textarea,
-  Text,
-  VStack
-} from "@chakra-ui/react";
+import Editor from "@monaco-editor/react";
 
 export default function ProblemDetail() {
   const { id } = useParams();
@@ -22,8 +15,8 @@ export default function ProblemDetail() {
   useEffect(() => {
     getProblemById(id).then(res => {
       setProblem(res.data);
-      setCode(res.data.starterCode || CODE_SNIPPETS["javascript"]); // ✅ Set problem-specific code
-      setLanguage(res.data.language || "javascript"); // ✅ Set problem-specific language
+      setCode(res.data.starterCode || CODE_SNIPPETS["javascript"]);
+      setLanguage(res.data.language || "javascript");
     });
   }, [id]);
 
@@ -38,60 +31,74 @@ export default function ProblemDetail() {
     }
   };
 
-  if (!problem) return <Text>Loading...</Text>;
+  if (!problem) return <p className="p-4">Loading...</p>;
 
   return (
-    <VStack align="stretch" spacing={4} p={4}>
-      <Text fontSize="2xl" fontWeight="bold">{problem.title}</Text>
-      <Text>{problem.description}</Text>
+    <div className="p-6 space-y-6">
+      <h1 className="text-2xl font-bold">{problem.title}</h1>
+      <p className="text-gray-800">{problem.description}</p>
 
-      <Select value={language} onChange={e => {
-        setLanguage(e.target.value);
-        setCode(CODE_SNIPPETS[e.target.value]);
-      }}>
-        {Object.keys(LANGUAGE_VERSIONS).map(lang => (
-          <option key={lang} value={lang}>{lang}</option>
+      <select
+        value={language}
+        onChange={(e) => {
+          setLanguage(e.target.value);
+          setCode(CODE_SNIPPETS[e.target.value]);
+        }}
+        className="border px-3 py-2 rounded-md"
+      >
+        {Object.keys(LANGUAGE_VERSIONS).map((lang) => (
+          <option key={lang} value={lang}>
+            {lang}
+          </option>
         ))}
-      </Select>
+      </select>
 
-      <Textarea
-        value={code}
-        onChange={e => setCode(e.target.value)}
-        height="300px"
-        fontFamily="monospace"
-      />
+      <div className="border rounded overflow-hidden">
+        <Editor
+          height="300px"
+          theme="vs-dark"
+          language={language}
+          value={code}
+          onChange={(val) => setCode(val)}
+        />
+      </div>
 
-      <Button onClick={handleSubmit} colorScheme="teal">Submit</Button>
+      <button
+        onClick={handleSubmit}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        Submit
+      </button>
 
-      {output && <Text fontWeight="bold">{output}</Text>}
+      {output && <p className="font-semibold">{output}</p>}
 
       {results.length > 0 && (
-        <Box borderWidth="1px" borderRadius="md" p={4}>
-          <Text fontWeight="bold" mb={2}>Test Case Results:</Text>
-          <Box overflowX="auto">
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <div className="border rounded-lg p-4">
+          <h2 className="font-bold mb-2">Test Case Results:</h2>
+          <div className="overflow-x-auto">
+            <table className="min-w-full border-collapse">
               <thead>
-                <tr>
-                  <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Input</th>
-                  <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Expected</th>
-                  <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Actual</th>
-                  <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Result</th>
+                <tr className="bg-gray-200">
+                  <th className="border px-4 py-2">Input</th>
+                  <th className="border px-4 py-2">Expected</th>
+                  <th className="border px-4 py-2">Actual</th>
+                  <th className="border px-4 py-2">Result</th>
                 </tr>
               </thead>
               <tbody>
                 {results.map((r, idx) => (
                   <tr key={idx}>
-                    <td style={{ padding: "8px" }}><code>{r.input}</code></td>
-                    <td style={{ padding: "8px" }}><code>{r.expected}</code></td>
-                    <td style={{ padding: "8px" }}><code>{r.actual}</code></td>
-                    <td style={{ padding: "8px" }}>{r.passed ? "✅" : "❌"}</td>
+                    <td className="border px-4 py-2"><code>{r.input}</code></td>
+                    <td className="border px-4 py-2"><code>{r.expected}</code></td>
+                    <td className="border px-4 py-2"><code>{r.actual}</code></td>
+                    <td className="border px-4 py-2">{r.passed ? "✅" : "❌"}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </Box>
-        </Box>
+          </div>
+        </div>
       )}
-    </VStack>
+    </div>
   );
 }

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getProblems } from "../api/problemApi";
 import { Link } from "react-router-dom";
-import { Box, Heading, Text } from "@chakra-ui/react";
 
 export default function Problems() {
   const [problems, setProblems] = useState([]);
@@ -11,16 +10,16 @@ export default function Problems() {
   }, []);
 
   return (
-    <Box p={4}>
-      <Heading mb={4}>Problems</Heading>
-      {problems.map(p => (
-        <Box key={p._id} p={3} shadow="md" mb={3} border="1px solid #ccc">
-          <Link to={`/problems/${p._id}`}>
-            <Text fontWeight="bold">{p.title}</Text>
-            <Text>{p.difficulty}</Text>
-          </Link>
-        </Box>
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-6">Problems</h1>
+      {problems.map((p) => (
+        <Link to={`/problems/${p._id}`} key={p._id}>
+          <div className="border border-gray-300 p-4 rounded-lg mb-4 hover:bg-gray-50 transition">
+            <h2 className="text-xl font-semibold">{p.title}</h2>
+            <p className="text-gray-700">{p.description}</p>
+          </div>
+        </Link>
       ))}
-    </Box>
+    </div>
   );
 }
