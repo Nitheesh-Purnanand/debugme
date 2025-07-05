@@ -50,11 +50,19 @@ if (process.env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "../authentication/dist");
   console.log("📁 Static path:", frontendPath);
 
+  // 🛡️ Block malformed routes like /:
   app.use((req, res, next) => {
-    if (/\/:($|[^a-zA-Z])/i.test(req.path)) {
+    const badPath = /\/:($|[^a-zA-Z])/i;
+    if (badPath.test(req.path)) {
       console.log("❌ Blocked malformed path before static:", req.path);
-      return res.status(400).send("Malformed route.");
+      return res.status(400).send("Invalid route.");
     }
+    next();
+  });
+
+  // 🧪 Log all static paths
+  app.use((req, res, next) => {
+    console.log(`[STATIC PATH CHECK] ${req.path}`);
     next();
   });
 
@@ -69,7 +77,8 @@ if (process.env.NODE_ENV === "production") {
   app.get("*", (req, res, next) => {
     console.log(`[STATIC REQ] ${req.path}`);
     try {
-      if (/\/:($|[^a-zA-Z])/i.test(req.path)) {
+      const badPath = /\/:($|[^a-zA-Z])/i;
+      if (badPath.test(req.path)) {
         console.log("❌ Blocked malformed wildcard path:", req.path);
         return res.status(400).send("Malformed wildcard route.");
       }
