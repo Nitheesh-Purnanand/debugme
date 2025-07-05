@@ -24,7 +24,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: import.meta.env.MODE ==="development"?'http://localhost:5001':"/",
+        target: process.env.NODE_ENV === "development" ? 'http://localhost:5001' : "/",
         changeOrigin: true,
         secure: false,
       },
