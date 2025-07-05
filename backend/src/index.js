@@ -6,11 +6,11 @@ import cors from "cors";
 import path from "path";
 
 // Route imports
-import authRoute from "./routes/auth.route.js";
-import problemRoutes from "./routes/problem.route.js";
-import leaderboardRoutes from "./routes/leaderboard.routes.js";
-import userRoutes from "./routes/user.route.js";
-import discussRoutes from "./routes/discuss.route.js";
+import authRoute from "./routes/auth.route.js"
+import problemRoutes from "./routes/problem.route.js"
+import leaderboardRoutes from "./routes/leaderboard.routes.js"
+import userRoutes from "./routes/user.route.js"
+import discussRoutes from "./routes/discuss.route.js"
 
 // Load env
 dotenv.config();
