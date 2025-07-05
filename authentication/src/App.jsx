@@ -31,7 +31,7 @@ const App = () => {
     <div className='text-red-500'>
       <Navbar></Navbar>
       <Routes>
-        <Route path='/' element={authUser?<HomePage/> : <Navigate to="/login"/>}>home</Route>
+        <Route path='/' element={authUser ? <HomePage/> : <Navigate to="/login" />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/problems" element={<Problems />} />
         <Route path="/problems/:id" element={<ProblemDetail />} />
