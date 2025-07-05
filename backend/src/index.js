@@ -43,8 +43,14 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "../authentication/dist/index.html"));
   });
 }
+app._router.stack.forEach((layer) => {
+  if (layer.route && layer.route.path) {
+    console.log("✅ Route:", layer.route.path);
+  } else if (layer.name === 'router' && layer.regexp) {
+    console.log("📦 Mounted Router Pattern:", layer.regexp);
+  }
+});
 
-// Start server
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
   connectdb();
