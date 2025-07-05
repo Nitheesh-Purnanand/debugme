@@ -89,7 +89,7 @@ if (process.env.NODE_ENV === "production") {
 //     next(err);
 //   }
 // });
-// }
+ }
 
 app.use((err, req, res, next) => {
   console.error("💥 Global error:", err.stack);
