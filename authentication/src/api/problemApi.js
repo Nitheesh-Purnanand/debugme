@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: import.meta.env.MODE ==="development"?"http://localhost:5001/api/problems":"/api/problems",
+  baseURL: import.meta.env.MODE ==="development"?"http://localhost:5001/api/problems":"https://debugme.onrender.com/api/problems",
   withCredentials: true,
 });
 
