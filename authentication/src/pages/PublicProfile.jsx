@@ -59,7 +59,7 @@ const PublicProfile = () => {
 
         <div className="mt-6 bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-lg">
           <h2 className="text-2xl font-semibold text-green-400 mb-2">✅ Solved Problems</h2>
-          <p className="text-3xl font-bold text-white">{profile.solvedProblems.length}</p>
+          <p className="text-3xl font-bold text-white">{profile.solvedCount}</p>
         </div>
       </div>
     </div>

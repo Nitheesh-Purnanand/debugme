@@ -29,21 +29,30 @@ export const getUserDashboard = async (req, res) => {
 export const getPublicProfile = async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
-      .select("fullname github linkedin leetcode solvedProblems createdAt")
-      .populate("solvedProblems", "title difficulty");
+      .select("fullname github linkedin leetcode profilepic solvedProblems createdAt")
+      .populate("solvedProblems", "_id") // optional if you want problem IDs
+      .lean();
 
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const solvedCount = user.solvedProblems?.length || 0;
 
     res.status(200).json({
+      _id: user._id,
       fullname: user.fullname,
       github: user.github,
       linkedin: user.linkedin,
       leetcode: user.leetcode,
+      profilepic: user.profilepic,
       joinedAt: user.createdAt,
-      solvedProblems: user.solvedProblems,
+      solvedProblems: user.solvedProblems || [],
+      solvedCount, // 💡 add this explicitly
     });
   } catch (err) {
-    console.error("Public Profile error:", err.message);
-    res.status(500).json({ message: "Server error" });
+    console.error("❌ Public Profile Error:", err.message);
+    res.status(500).json({ error: "Server error" });
   }
 };
+
