@@ -30,11 +30,11 @@ app.use(cors({
 }));
 
 // ✅ API Routes
-app.use("/api/auth", authRoute);
-app.use("/api/problems", problemRoutes);
-app.use("/api/leaderboard", leaderboardRoutes);
-app.use("/api/user", userRoutes); // handles /dashboard and /profile/:id
-app.use("/api/discuss", discussRoutes);
+// app.use("/api/auth", authRoute);
+// app.use("/api/problems", problemRoutes);
+// app.use("/api/leaderboard", leaderboardRoutes);
+// app.use("/api/user", userRoutes); // handles /dashboard and /profile/:id
+// app.use("/api/discuss", discussRoutes);
 
 // ✅ Production frontend
 if (process.env.NODE_ENV === "production") {
