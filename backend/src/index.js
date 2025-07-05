@@ -75,19 +75,20 @@ if (process.env.NODE_ENV === "production") {
   }
 
   app.get("*", (req, res, next) => {
-    console.log(`[STATIC REQ] ${req.path}`);
-    try {
-      const badPath = /\/:($|[^a-zA-Z])/i;
-      if (badPath.test(req.path)) {
-        console.log("❌ Blocked malformed wildcard path:", req.path);
-        return res.status(400).send("Malformed wildcard route.");
-      }
-      res.sendFile(path.join(frontendPath, "index.html"));
-    } catch (err) {
-      console.error("💥 Error serving index.html:", err.message);
-      next(err);
-    }
-  });
+  console.log(`[STATIC REQ] ${req.path}`);
+  try {
+    // Temporarily remove the badPath check
+    // const badPath = /\/:($|[^a-zA-Z])/i;
+    // if (badPath.test(req.path)) {
+    //   console.log("❌ Blocked malformed wildcard path:", req.path);
+    //   return res.status(400).send("Malformed wildcard route.");
+    // }
+    res.sendFile(path.join(frontendPath, "index.html"));
+  } catch (err) {
+    console.error("💥 Error serving index.html:", err.message);
+    next(err);
+  }
+});
 }
 
 app.use((err, req, res, next) => {
