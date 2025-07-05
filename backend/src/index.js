@@ -19,6 +19,7 @@ const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(cookieParser());
+
 app.use(cors({
   origin: process.env.NODE_ENV === "production"
     ? "https://your-domain.onrender.com"
@@ -31,43 +32,57 @@ app.use((req, res, next) => {
   next();
 });
 
-console.log(" Mounting API Routes...");
-console.log(" /api/auth");
+console.log("🔗 Mounting API Routes...");
+console.log("🔗 /api/auth");
 app.use("/api/auth", authRoute);
-console.log(" /api/problems");
+console.log("🔗 /api/problems");
 app.use("/api/problems", problemRoutes);
-console.log(" /api/leaderboard");
+console.log("🔗 /api/leaderboard");
 app.use("/api/leaderboard", leaderboardRoutes);
-console.log(" /api/user");
+console.log("🔗 /api/user");
 app.use("/api/user", userRoutes);
-console.log(" /api/discuss");
+console.log("🔗 /api/discuss");
 app.use("/api/discuss", discussRoutes);
-console.log(" All API routes mounted successfully.");
+console.log("✅ All API routes mounted successfully.");
 
 if (process.env.NODE_ENV === "production") {
-  console.log(" Production mode: Serving frontend...");
+  console.log("🌐 Production mode: Serving frontend...");
   const frontendPath = path.join(__dirname, "../authentication/dist");
-  console.log(" Static path:", frontendPath);
+  console.log("📁 Static path:", frontendPath);
 
-  app.use(express.static(frontendPath));
+  app.use((req, res, next) => {
+    if (/\/:($|[^a-zA-Z])/i.test(req.path)) {
+      console.log("❌ Blocked malformed path before static:", req.path);
+      return res.status(400).send("Malformed route.");
+    }
+    next();
+  });
+
+  try {
+    console.log("🧪 Setting up static file middleware...");
+    app.use(express.static(frontendPath));
+    console.log("✅ Static file middleware ready.");
+  } catch (err) {
+    console.error("❌ Error in static middleware setup:", err.message);
+  }
 
   app.get("*", (req, res, next) => {
     console.log(`[STATIC REQ] ${req.path}`);
     try {
       if (/\/:($|[^a-zA-Z])/i.test(req.path)) {
-        console.log(" Malformed route blocked:", req.path);
-        return res.status(400).send("Malformed route.");
+        console.log("❌ Blocked malformed wildcard path:", req.path);
+        return res.status(400).send("Malformed wildcard route.");
       }
       res.sendFile(path.join(frontendPath, "index.html"));
     } catch (err) {
-      console.log(" Error serving frontend fallback route:", err.message);
+      console.error("💥 Error serving index.html:", err.message);
       next(err);
     }
   });
 }
 
 app.use((err, req, res, next) => {
-  console.error(" Global error:", err.stack);
+  console.error("💥 Global error:", err.stack);
   res.status(500).json({
     message: "Something broke!",
     error: err.message,
@@ -75,6 +90,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(` Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
   connectdb();
 });
