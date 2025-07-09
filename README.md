@@ -118,10 +118,10 @@ Live App: [https://debugme.onrender.com](https://debugme.onrender.com)
 ---
 
 ## 📸 Screenshots
+![Screenshot (59)](https://github.com/user-attachments/assets/b79eb08a-3918-45a6-afa5-9dd4759b5e05)
 
-> Add images of the dashboard, problems page, editor, discuss section, and leaderboard here.
 
----
+![Screenshot (56)](https://github.com/user-attachments/assets/6f7282db-0f91-4ec7-9e1d-9bf0146bb157)
 
 ## 🤝 Contributing
 
