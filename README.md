@@ -118,8 +118,9 @@ Live App: [https://debugme.onrender.com](https://debugme.onrender.com)
 ---
 
 ## 📸 Screenshots
-![Screenshot (59)](https://github.com/user-attachments/assets/b79eb08a-3918-45a6-afa5-9dd4759b5e05)
+<img width="1919" height="1078" alt="Screenshot 2025-07-02 230641" src="https://github.com/user-attachments/assets/a1c03278-49e7-417a-8b5e-ad70bd0e6f91" />
 
+![Screenshot (59)](https://github.com/user-attachments/assets/b79eb08a-3918-45a6-afa5-9dd4759b5e05)
 
 ![Screenshot (56)](https://github.com/user-attachments/assets/6f7282db-0f91-4ec7-9e1d-9bf0146bb157)
 
